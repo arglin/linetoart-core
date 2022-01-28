@@ -1,7 +1,8 @@
 # linetoart-core
-core algorithm to generate the String Art from a portrait
+core algorithm to generate the String Art from a portrait. 
 
 This artwork is created by crossing one single string around fixed number of nails which form a shape like a circle, square etc.
+
 
 # how to use
 ```
