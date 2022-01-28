@@ -27,3 +27,6 @@ List<Integer> path = solution.getPath();
 ![image](https://user-images.githubusercontent.com/48913228/151481519-f33156e0-c3ec-4a60-8344-96c25c5b2aff.png)
 ![image](https://user-images.githubusercontent.com/48913228/151481775-3a8e25d2-fb03-4161-8e45-cb2b83193ab4.png)
 
+# version
+  ### v1.0
+  - initial version of linetoart-core
