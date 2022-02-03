@@ -17,9 +17,19 @@ L2ASolver solver = L2ASolverFactory.getSolver(L2ASolverMethods.GREEDY_LAZY_DEPTH
 L2ASolution solution = solver.solve(image, 300);
 
 /**
- * the path to form the portrait, each node represent the nail index(starts from 0)
+ * the path that forms the portrait, each item represents the nail index(starts from 0)
  */
 List<Integer> path = solution.getPath();
+
+/**
+ * the net that forms the portrait, each key-value represents the connected nail indexs of the key nail
+ */
+Map<Integer, Set<Integer>> net = solution.getNet();
+
+/**
+ * get all nails information
+ */
+Nail[] nails = solution.getAllNails();
 
 ```
 
