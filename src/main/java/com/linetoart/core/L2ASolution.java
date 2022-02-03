@@ -24,11 +24,28 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver.model;
+package com.linetoart.core;
 
-public enum NailsShapes {
-    OVAL,
-//    RECTANGLE,
-//    HEART
+import com.linetoart.core.model.Nail;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+public interface L2ASolution {
+
+    /**
+     * @return the path that forms the portrait, each item represents the nail index(starts from 0)
+     */
+    List<Integer> getPath();
+
+    /**
+     * @return the net that forms the portrait, each key-value represents the connected nail indexs of the key nail
+     */
+    Map<Integer, Set<Integer>> getNet();
+
+    /**
+     * @return get all nails information
+     */
+    Nail[] getAllNails();
 }
-

@@ -24,25 +24,24 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver.model;
+package com.linetoart.core.solver;
+
+import com.linetoart.core.L2ASolution;
+import com.linetoart.core.model.Nail;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class L2ASolution {
+public class L2Art implements L2ASolution {
 
-    private final ComputeNail[] computeNails;
+    private final Nail[] nails;
     private final Map<Integer, Set<Integer>> net;
     private final List<Integer> path;
 
-    public L2ASolution(ComputeNail[] computeNails) {
-        this.computeNails = computeNails;
+    public L2Art(Nail[] nails) {
+        this.nails = nails;
         this.path = new ArrayList<>();
         this.net = new ConcurrentHashMap<>();
-    }
-
-    public ComputeNail[] getPinLocations() {
-        return computeNails;
     }
 
     public boolean hasEdge(int start, int end) {
@@ -58,6 +57,10 @@ public class L2ASolution {
         this.path.add(n);
         this.net.computeIfAbsent(current, (k) -> new HashSet<>()).add(n);
         this.net.computeIfAbsent(n, (k) -> new HashSet<>()).add(current);
+    }
+
+    public Nail[] getAllNails() {
+        return nails;
     }
 
     public List<Integer> getPath() {

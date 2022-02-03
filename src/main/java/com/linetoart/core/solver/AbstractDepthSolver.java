@@ -26,14 +26,15 @@
 
 package com.linetoart.core.solver;
 
+import com.linetoart.core.L2ASolution;
+import com.linetoart.core.L2ASolver;
 import com.linetoart.core.basic.DepthMatchReport;
 import com.linetoart.core.basic.L2ADefault;
 import com.linetoart.core.basic.Bresenham;
 import com.linetoart.core.basic.PixelActionListener;
-import com.linetoart.core.solver.model.ComputeData;
-import com.linetoart.core.solver.model.ComputeNail;
-import com.linetoart.core.solver.model.NailsShapes;
-import com.linetoart.core.solver.model.L2ASolution;
+import com.linetoart.core.model.ComputeData;
+import com.linetoart.core.model.Nail;
+import com.linetoart.core.model.NailsFormation;
 import com.linetoart.core.tool.ImageConvertor;
 
 import java.awt.*;
@@ -42,11 +43,12 @@ public abstract class AbstractDepthSolver implements L2ASolver {
 
     public L2ASolution solve(Image image, int nailNum) {
 
-        ComputeData computeData = new ComputeData(image, NailsShapes.OVAL);
-        L2ASolution l2ASolution = new L2ASolution(computeData.getComputeNails(nailNum));
+        ComputeData computeData = new ComputeData(image, NailsFormation.OVAL);
+        L2Art l2Art = new L2Art(computeData.getComputeNails(nailNum));
         int[][] blackDepth = ImageConvertor.pixelsToGrayDepthArray(computeData.getComputePixels());
 
-        this.crossThreads(blackDepth, l2ASolution, (x, y) -> {
+        this.crossThreads(blackDepth, l2Art, (x, y) -> {
+            //every time deeper the depth of every pixel the line goes through
             blackDepth[x][y] += L2ADefault.lineDepth;
             if (blackDepth[x][y] > 255) {
                 blackDepth[x][y] = 255;
@@ -56,21 +58,24 @@ public abstract class AbstractDepthSolver implements L2ASolver {
             }
         });
 
-        return l2ASolution;
+        return l2Art;
     }
 
-    protected DepthMatchReport analyse(int startPin, int endPin, int[][] depth, ComputeNail[] computeNails) {
+    /**
+     *  evaluate the accuracy of one line start from the startPin to the endPin
+     */
+    protected DepthMatchReport analyse(int startPin, int endPin, int[][] depth, Nail[] nails) {
 
         DepthMatchReport depthMatchReport = new DepthMatchReport();
         try {
-            Bresenham.plotLine(computeNails[startPin].centerX, computeNails[startPin].centerY,
-                    computeNails[endPin].centerX, computeNails[endPin].centerY, (x, y) -> depthMatchReport.compare(0x00, depth[x][y]));
+            Bresenham.plotLine(nails[startPin].centerX, nails[startPin].centerY,
+                    nails[endPin].centerX, nails[endPin].centerY, (x, y) -> depthMatchReport.compare(0x00, depth[x][y]));
         } catch (Exception e) {
-            System.out.println(computeNails[startPin].centerX);
-            System.out.println(computeNails[startPin].centerY);
+            System.out.println(nails[startPin].centerX);
+            System.out.println(nails[startPin].centerY);
         }
         return depthMatchReport;
     }
 
-    protected abstract void crossThreads(int[][] pixels, L2ASolution l2ASolution, PixelActionListener listener);
+    protected abstract void crossThreads(int[][] pixels, L2Art l2Art, PixelActionListener listener);
 }

@@ -24,24 +24,11 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver.model;
+package com.linetoart.core.model;
 
-public class ComputeNail {
-
-    /**
-     * order num in the nails shape
-     */
-    public final int orderNum;
-
-    /**
-     * the center coordinate of the virtual nail
-     */
-    public final int centerX;
-    public final int centerY;
-
-    public ComputeNail(int orderNum, int x, int y) {
-        this.orderNum = orderNum;
-        this.centerX = x;
-        this.centerY = y;
-    }
+public enum NailsFormation {
+    OVAL,
+    RECTANGLE, //TODO
+    HEART //TODO
 }
+

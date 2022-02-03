@@ -24,9 +24,9 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver;
+package com.linetoart.core;
 
-import com.linetoart.core.solver.model.L2ASolution;
+import com.linetoart.core.L2ASolution;
 
 import java.awt.*;
 
@@ -36,7 +36,7 @@ public interface L2ASolver {
      * if the image is not a square, then it will take the center square part to process
      * @param image image to be processed, make sure the image size is at least 500*500
      * @param nailNum the nail number to form the portrait
-     * @return Solution
+     * @return L2ASolution
      */
-    public L2ASolution solve(Image image, int nailNum);
+    L2ASolution solve(Image image, int nailNum);
 }

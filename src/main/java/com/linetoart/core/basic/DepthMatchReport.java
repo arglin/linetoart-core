@@ -28,8 +28,8 @@ package com.linetoart.core.basic;
 
 public class DepthMatchReport {
 
-    public long affectedPixelNum = 0;
-    public double pixelDiffSum = 0;
+    private long affectedPixelNum = 0;
+    private double pixelDiffSum = 0;
 
     /**
      * ARGB pixel

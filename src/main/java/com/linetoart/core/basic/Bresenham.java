@@ -26,6 +26,9 @@
 
 package com.linetoart.core.basic;
 
+/**
+ * simple algo to calculate the coordinate of all pixels that in the line
+ */
 public class Bresenham {
 
     private static void plotLineLow(int x0, int y0, int x1, int y1, PixelActionListener listener) {

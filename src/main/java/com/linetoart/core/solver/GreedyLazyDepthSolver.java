@@ -30,39 +30,38 @@ import com.linetoart.core.basic.DepthMatchReport;
 import com.linetoart.core.basic.L2ADefault;
 import com.linetoart.core.basic.Bresenham;
 import com.linetoart.core.basic.PixelActionListener;
-import com.linetoart.core.solver.model.ComputeNail;
-import com.linetoart.core.solver.model.L2ASolution;
+import com.linetoart.core.model.Nail;
 
 public class GreedyLazyDepthSolver extends AbstractDepthSolver {
 
     @Override
-    protected void crossThreads(int[][] depth, L2ASolution l2ASolution, PixelActionListener listener) {
+    protected void crossThreads(int[][] depth, L2Art l2Art, PixelActionListener listener) {
 
-        ComputeNail[] computeNails = l2ASolution.getPinLocations();
+        Nail[] nails = l2Art.getAllNails();
         int start = 0;
         int next = start;
         int crossNum = 0;
         while (crossNum < L2ADefault.maxTurns && next != -1) {
-            next = this.findBestNextPoint(depth, start, computeNails, l2ASolution);
+            next = this.findBestNextNail(depth, start, nails, l2Art);
             if (next != -1) {
-                l2ASolution.addEdge(next);
-                Bresenham.plotLine(computeNails[start].centerX, computeNails[start].centerY,
-                        computeNails[next].centerX, computeNails[next].centerY, listener);
+                l2Art.addEdge(next);
+                Bresenham.plotLine(nails[start].centerX, nails[start].centerY,
+                        nails[next].centerX, nails[next].centerY, listener);
                 start = next;
                 crossNum++;
             }
         }
     }
 
-    protected int findBestNextPoint(int[][] depth, Integer start, ComputeNail[] computeNails, L2ASolution l2ASolution) {
+    protected int findBestNextNail(int[][] depth, Integer start, Nail[] nails, L2Art l2Art) {
 
         DepthMatchReport bestMr = new DepthMatchReport();
         int bestEnd = -1;
-        for (int i = 0; i < computeNails.length; i++) {
+        for (int i = 0; i < nails.length; i++) {
             if (i == start) continue;
-            if (l2ASolution.hasEdge(start, i)) continue;
+            if (l2Art.hasEdge(start, i)) continue;
             if (Math.abs(start - i) < 10) continue;
-            DepthMatchReport mr = this.analyse(start, i, depth, computeNails);
+            DepthMatchReport mr = this.analyse(start, i, depth, nails);
 
             if (mr.isBetterThan(bestMr) && mr.getAccuracy() >= L2ADefault.minAccurate) {
                 bestMr = mr;

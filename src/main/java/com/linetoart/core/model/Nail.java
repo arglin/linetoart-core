@@ -24,23 +24,24 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver;
+package com.linetoart.core.model;
 
-import com.linetoart.core.L2ASolver;
+public class Nail {
 
-public class L2ASolverFactory {
+    /**
+     * order num in the nails shape
+     */
+    public final int orderNum;
 
-    public static L2ASolver getSolver(L2ASolverMethods sm) {
+    /**
+     * the center coordinate of the virtual nail
+     */
+    public final int centerX;
+    public final int centerY;
 
-        switch (sm) {
-            case GREEDY_LAZY_DEPTH:
-                return new GreedyLazyDepthSolver();
-
-            case GREEDY_PERFECTIONISM:
-                return new GreedyPerfectionismDepthSolver();
-
-            default:
-                return null;
-        }
+    public Nail(int orderNum, int x, int y) {
+        this.orderNum = orderNum;
+        this.centerX = x;
+        this.centerY = y;
     }
 }

@@ -24,7 +24,7 @@
  * SOFTWARE.
  */
 
-package com.linetoart.core.solver.model;
+package com.linetoart.core.model;
 
 import com.linetoart.core.basic.L2ADefault;
 import com.linetoart.core.tool.ImageConvertor;
@@ -35,20 +35,20 @@ public class ComputeData {
 
     private final int[][] computePixels;
 
-    private final NailsShapes nailsShape;
+    private final NailsFormation nailsFormation;
 
     /**
      * @param image input image
      */
     public ComputeData(Image image) {
-        this(image, NailsShapes.OVAL);
+        this(image, NailsFormation.OVAL);
     }
 
-    public ComputeData(Image image, NailsShapes shape) {
+    public ComputeData(Image image, NailsFormation formation) {
         int originalWidth = image.getWidth(null);
         int originalHeight = image.getHeight(null);
-        int computeWidth = 0;
-        int computeHeight = 0;
+        int computeWidth;
+        int computeHeight;
         if (originalWidth >= originalHeight) {
             computeHeight = L2ADefault.shapeEdgeMin;
             computeWidth = (int) (originalWidth * L2ADefault.shapeEdgeMin / (float) originalHeight);
@@ -58,37 +58,62 @@ public class ComputeData {
         }
 
         this.computePixels = ImageConvertor.imageToPixelArray(image, computeWidth, computeHeight);
-        this.nailsShape = shape;
+        this.nailsFormation = formation;
     }
 
-    private ComputeNail[] shapeOval(int nailNum) {
-        ComputeNail[] computeNails = new ComputeNail[nailNum];
+    private Nail[] formOval(int nailNum) {
+        Nail[] nails = new Nail[nailNum];
         int width = this.computePixels.length;
         int height = this.computePixels[0].length;
         float[] center = new float[]{(width - 1) / 2f, (height - 1) / 2f};
         float a = width / 2f;
         float b = height / 2f;
 
-        for (int i = 0; i < computeNails.length; i++) {
+        for (int i = 0; i < nails.length; i++) {
             int x = (int) (center[0] + a * Math.cos(Math.toRadians(i * 360f / nailNum)));
             int y = (int) (center[1] + b * Math.sin(Math.toRadians(i * 360f / nailNum)));
-            computeNails[i] = new ComputeNail(i + 1, x, y);
+            nails[i] = new Nail(i + 1, x, y);
         }
 
-        return computeNails;
+        return nails;
     }
 
-    public ComputeNail[] getComputeNails(int nailNum) {
-
-        if (this.nailsShape == NailsShapes.OVAL) {
-            return this.shapeOval(nailNum);
-        }
+    private Nail[] formRectangle(int nailNum) {
+        //TODO
         return null;
     }
 
+    private Nail[] formHeart(int nailNum) {
+        //TODO
+        return null;
+    }
+
+    /**
+     * get all the nails on the canvas
+     *
+     * @param nailNum nail total numbers on the canvas
+     * @return all nails
+     */
+    public Nail[] getComputeNails(int nailNum) {
+
+        switch (this.nailsFormation) {
+            case OVAL:
+                return this.formOval(nailNum);
+            case RECTANGLE:
+                return this.formRectangle(nailNum);
+            case HEART:
+                return this.formHeart(nailNum);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * @return the pixel array for the processing
+     */
     public int[][] getComputePixels() {
 
-        if (this.nailsShape == NailsShapes.OVAL) {
+        if (this.nailsFormation == NailsFormation.OVAL) {
             int width = this.computePixels.length;
             int height = this.computePixels[0].length;
             float[] center = new float[]{(width - 1) / 2f, (height - 1) / 2f};
